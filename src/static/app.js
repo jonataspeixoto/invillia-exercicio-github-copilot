@@ -20,11 +20,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Lista de participantes inscritos
+        let participantsHtml = "";
+        if (details.participants.length > 0) {
+          participantsHtml = `
+            <p><strong>Participants:</strong></p>
+            <ul>
+              ${details.participants
+                .map(email => {
+                  const initial = email.trim().charAt(0).toUpperCase();
+                  return `<li>
+                    <span class="participant-avatar">${initial}</span>
+                    <span class="participant-email">${email}</span>
+                  </li>`;
+                })
+                .join("")}
+            </ul>
+          `;
+        } else {
+          participantsHtml = `<p><strong>Participants:</strong> None yet</p>`;
+        }
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHtml}
         `;
 
         activitiesList.appendChild(activityCard);
